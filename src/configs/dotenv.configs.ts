@@ -4,6 +4,8 @@ import * as joi from 'joi';
 const envVarsSchema = joi
   .object({
     PORT: joi.number().required(),
+    HOST_PRODUCT_SERVICE: joi.string().required(),
+    PORT_PRODUCT_SERVICE: joi.number().required(),
   })
   .unknown(true);
 
@@ -16,10 +18,14 @@ if (error) {
 
 interface Env {
   PORT: number;
+  HOST_PRODUCT_SERVICE: string;
+  PORT_PRODUCT_SERVICE: number;
 }
 
 const env: Env = value as Env;
 
 export const envs = {
   PORT: env?.PORT,
+  HOST_PRODUCT_SERVICE: env?.HOST_PRODUCT_SERVICE,
+  PORT_PRODUCT_SERVICE: env?.PORT_PRODUCT_SERVICE,
 };
