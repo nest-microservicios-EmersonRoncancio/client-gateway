@@ -3,6 +3,7 @@ import { ProductsController } from './products.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { PRODUCT_SERVICE } from 'src/configs/services.configs';
 import { envs } from 'src/configs/dotenv.configs';
+import { CommonModule } from 'src/common/common.module';
 
 @Module({
   controllers: [ProductsController],
@@ -18,6 +19,7 @@ import { envs } from 'src/configs/dotenv.configs';
         },
       },
     ]),
+    CommonModule,
   ],
 })
 export class ProductsModule {}
