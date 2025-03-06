@@ -6,6 +6,8 @@ const envVarsSchema = joi
     PORT: joi.number().required(),
     HOST_PRODUCT_SERVICE: joi.string().required(),
     PORT_PRODUCT_SERVICE: joi.number().required(),
+    HOST_ORDER_SERVICE: joi.string().required(),
+    PORT_ORDER_SERVICE: joi.number().required(),
   })
   .unknown(true);
 
@@ -20,6 +22,8 @@ interface Env {
   PORT: number;
   HOST_PRODUCT_SERVICE: string;
   PORT_PRODUCT_SERVICE: number;
+  HOST_ORDER_SERVICE: string;
+  PORT_ORDER_SERVICE: number;
 }
 
 const env: Env = value as Env;
@@ -28,4 +32,6 @@ export const envs = {
   PORT: env?.PORT,
   HOST_PRODUCT_SERVICE: env?.HOST_PRODUCT_SERVICE,
   PORT_PRODUCT_SERVICE: env?.PORT_PRODUCT_SERVICE,
+  HOST_ORDER_SERVICE: env?.HOST_ORDER_SERVICE,
+  PORT_ORDER_SERVICE: env?.PORT_ORDER_SERVICE,
 };
