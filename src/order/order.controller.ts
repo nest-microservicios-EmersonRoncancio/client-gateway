@@ -11,20 +11,18 @@ import {
 } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
-import { ORDER_SERVICE } from 'src/configs/services.configs';
+import { NATS_CLIENT } from 'src/configs/services.configs';
 import { catchError } from 'rxjs';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { StatusOrderDto } from './dto/status-order.dto';
 
 @Controller('order')
 export class OrderController {
-  constructor(
-    @Inject(ORDER_SERVICE) private readonly orderClient: ClientProxy,
-  ) {}
+  constructor(@Inject(NATS_CLIENT) private readonly client: ClientProxy) {}
 
   @Post()
   create(@Body() createOrderDto: CreateOrderDto) {
-    return this.orderClient.send({ cmd: 'createOrder' }, createOrderDto).pipe(
+    return this.client.send({ cmd: 'createOrder' }, createOrderDto).pipe(
       catchError((error) => {
         throw new RpcException(error as string);
       }),
@@ -33,18 +31,16 @@ export class OrderController {
 
   @Get('find-all')
   findAll(@Query() paginationDto: PaginationDto) {
-    return this.orderClient
-      .send({ cmd: 'findAllOrder' }, { ...paginationDto })
-      .pipe(
-        catchError((error) => {
-          throw new RpcException(error as string);
-        }),
-      );
+    return this.client.send({ cmd: 'findAllOrder' }, { ...paginationDto }).pipe(
+      catchError((error) => {
+        throw new RpcException(error as string);
+      }),
+    );
   }
 
   @Get('find-id/:id')
   findOne(@Param('id', ParseUUIDPipe) id: string) {
-    return this.orderClient.send({ cmd: 'findOneOrder' }, { id }).pipe(
+    return this.client.send({ cmd: 'findOneOrder' }, { id }).pipe(
       catchError((error) => {
         throw new RpcException(error as string);
       }),
@@ -56,7 +52,7 @@ export class OrderController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() status: StatusOrderDto,
   ) {
-    return this.orderClient
+    return this.client
       .send({ cmd: 'changeOrderStatus' }, { id: id, ...status })
       .pipe(
         catchError((error) => {
