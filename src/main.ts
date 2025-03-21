@@ -7,6 +7,8 @@ import { ExceptionFilter } from './common/filters/rpc-exception.filter';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  console.log('hola como estamos');
+
   app.setGlobalPrefix('api');
 
   app.useGlobalPipes(

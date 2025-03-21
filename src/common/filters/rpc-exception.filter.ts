@@ -10,6 +10,19 @@ export class ExceptionFilter implements ExceptionFilter {
 
     const rpcError = exception.getError();
 
+    // eslint-disable-next-line @typescript-eslint/no-base-to-string
+    if (rpcError.toString().includes('Empty')) {
+      console.log('Empty');
+      return response.status(500).json({
+        statusCode: 500,
+        // eslint-disable-next-line @typescript-eslint/no-base-to-string
+        message: rpcError
+          .toString()
+          // eslint-disable-next-line @typescript-eslint/no-base-to-string
+          .substring(0, rpcError.toString().indexOf('(') - 1),
+      });
+    }
+
     if (
       typeof rpcError === 'object' &&
       'statusCode' in rpcError &&
