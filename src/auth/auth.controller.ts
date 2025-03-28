@@ -1,8 +1,9 @@
-import { Get, Inject, Post } from '@nestjs/common';
+import { Controller, Get, Inject, Post } from '@nestjs/common';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { catchError } from 'rxjs';
 import { NATS_CLIENT } from 'src/configs/services.configs';
 
+@Controller('auth')
 export class AuthController {
   constructor(@Inject(NATS_CLIENT) private readonly client: ClientProxy) {}
 
@@ -17,7 +18,7 @@ export class AuthController {
 
   @Post('register')
   register() {
-    return this.client.send({ cmd: 'register.user' }, {}).pipe(
+    return this.client.send('register.user', {}).pipe(
       catchError((error) => {
         throw new RpcException(error as string);
       }),
@@ -26,7 +27,7 @@ export class AuthController {
 
   @Get('verify')
   verify() {
-    return this.client.send({ cmd: 'verify.user' }, {}).pipe(
+    return this.client.send('verify.user', {}).pipe(
       catchError((error) => {
         throw new RpcException(error as string);
       }),
