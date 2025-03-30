@@ -5,6 +5,7 @@ const envVarsSchema = joi
   .object({
     PORT: joi.number().required(),
     NATS_SERVER: joi.array().items(joi.string()).required(),
+    SECRET_JWT: joi.string().required(),
   })
   .unknown(true);
 
@@ -21,6 +22,7 @@ if (error) {
 interface Env {
   PORT: number;
   NATS_SERVER: string[];
+  SECRET_JWT: string;
 }
 
 const env: Env = value as Env;
@@ -28,4 +30,5 @@ const env: Env = value as Env;
 export const envs = {
   PORT: env?.PORT,
   NATS_SERVER: env?.NATS_SERVER,
+  SECRET_JWT: env?.SECRET_JWT,
 };
