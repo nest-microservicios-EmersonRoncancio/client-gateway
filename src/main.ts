@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { RequestMethod, ValidationPipe } from '@nestjs/common';
 import { envs } from './configs/dotenv.configs';
 import { ExceptionFilter } from './common/filters/rpc-exception.filter';
 
@@ -9,7 +9,14 @@ async function bootstrap() {
 
   console.log('Bienvenido a la API');
 
-  app.setGlobalPrefix('api');
+  app.setGlobalPrefix('api', {
+    exclude: [
+      {
+        path: '',
+        method: RequestMethod.GET,
+      },
+    ],
+  });
 
   app.useGlobalPipes(
     new ValidationPipe({
